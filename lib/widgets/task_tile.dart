@@ -6,6 +6,9 @@ import '../blocs/bloc_exports.dart';
 import '../models/task.dart';
 import './popup_menu.dart';
 
+import '../screens/edit_task_screen.dart';
+import '../widgets/popup_menu.dart';
+
 class TaskTile extends StatelessWidget {
   const TaskTile({
     Key? key,
@@ -20,6 +23,23 @@ class TaskTile extends StatelessWidget {
         : ctx.read<TasksBloc>().add(RemoveTask(task: task));
   }
 
+  void _editTask(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: EditTaskScreen(
+            oldTask: task,
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -30,19 +50,19 @@ class TaskTile extends StatelessWidget {
           Expanded(
             child: Row(
               children: [
-                const Icon(Icons.star_outline),
-                const SizedBox(
-                  width: 10,
-                ),
+                task.isFavorite == false
+                    ? const Icon(Icons.star_outline)
+                    : const Icon(Icons.star),
+                const SizedBox(width: 10),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         task.title,
-                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           fontSize: 18,
+                          overflow: TextOverflow.ellipsis,
                           decoration:
                               task.isDone! ? TextDecoration.lineThrough : null,
                         ),
@@ -50,7 +70,7 @@ class TaskTile extends StatelessWidget {
                       Text(
                         DateFormat()
                             .add_yMMMd()
-                            .add_Hms()
+                            .add_Hm()
                             .format(DateTime.parse(task.date)),
                       ),
                     ],
@@ -73,6 +93,15 @@ class TaskTile extends StatelessWidget {
                 task: task,
                 cancelOrDeleteCallback: () =>
                     _removeOrDeleteTask(context, task),
+                likeOrDislikeCallback: () => context.read<TasksBloc>().add(
+                      MarkFavoriteOrUnfavoriteTask(task: task),
+                    ),
+                editTaskCallback: () {
+                  // Navigator.of(context).pop();
+                  _editTask(context);
+                },
+                restoreTaskCallback: () =>
+                    context.read<TasksBloc>().add(RestoreTask(task: task)),
               ),
             ],
           ),
@@ -86,9 +115,10 @@ class TaskTile extends StatelessWidget {
 // ListTile(
 //       title: Text(
 //         task.title,
-//         overflow: TextOverflow.ellipsis,
 //         style: TextStyle(
-//             decoration: task.isDone! ? TextDecoration.lineThrough : null),
+//           overflow: TextOverflow.ellipsis,
+//           decoration: task.isDone! ? TextDecoration.lineThrough : null,
+//         ),
 //       ),
 //       trailing: Checkbox(
 //         value: task.isDone,

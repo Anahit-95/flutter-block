@@ -20,7 +20,7 @@ class TasksList extends StatelessWidget {
               .map(
                 (task) => ExpansionPanelRadio(
                   value: task.id,
-                  headerBuilder: (context, isOpen) => TaskTile(task: task),
+                  headerBuilder: ((context, isOpen) => TaskTile(task: task)),
                   body: ListTile(
                     title: SelectableText.rich(
                       TextSpan(
