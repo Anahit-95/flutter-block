@@ -53,6 +53,7 @@ class AddTaskScreen extends StatelessWidget {
                     id: GUIDGen.generate(),
                     title: titleController.text,
                     description: descriptionController.text,
+                    date: DateTime.now().toString(),
                   );
                   context.read<TasksBloc>().add(AddTask(task: task));
                   Navigator.pop(context);

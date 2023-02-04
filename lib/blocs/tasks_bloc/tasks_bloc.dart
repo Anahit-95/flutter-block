@@ -11,6 +11,7 @@ class TasksBloc extends HydratedBloc<TasksEvent, TasksState> {
     on<UpdateTask>(_onUpdateTask);
     on<DeleteTask>(_onDeleteTask);
     on<RemoveTask>(_onRemoveTask);
+    on<MarkFavoriteOrUnfavoriteTask>(_onMarkFavoriteOrUnfavoriteTask);
   }
 
   void _onAddTask(AddTask event, Emitter<TasksState> emit) {
@@ -69,6 +70,9 @@ class TasksBloc extends HydratedBloc<TasksEvent, TasksState> {
         ..add(event.task.copyWith(isDeleted: true)),
     ));
   }
+
+  void _onMarkFavoriteOrUnfavoriteTask(
+      MarkFavoriteOrUnfavoriteTask event, Emitter<TasksState> emit) {}
 
   @override
   TasksState? fromJson(Map<String, dynamic> json) {
