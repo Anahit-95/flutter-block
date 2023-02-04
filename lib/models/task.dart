@@ -46,24 +46,6 @@ class Task extends Equatable {
     );
   }
 
-  // Map<String, dynamic> toMap() {
-  //   return {
-  //     'id': id,
-  //     'title': title,
-  //     'isDone': isDone,
-  //     'isDeleted': isDeleted,
-  //   };
-  // }
-
-  // factory Task.fromMap(Map<String, dynamic> map) {
-  //   return Task(
-  //     id: map['id'] ?? '',
-  //     title: map['title'] ?? '',
-  //     isDone: map['isDone'],
-  //     isDeleted: map['isDeleted'],
-  //   );
-  // }
-
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
